@@ -1,0 +1,23 @@
+{
+  "name": "appfullstack-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Proyecto FullStack Curso JS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "watch": "nodemon"
+  },
+  "author": "Alberto C.",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^6.7.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
