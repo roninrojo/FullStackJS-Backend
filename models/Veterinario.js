@@ -55,6 +55,13 @@ veterinarioSchema.pre("save", async function (next) {
 	this.password = await bcrypt.hash(this.password, salt)
 })
 
+// Asignamos un metdodo al objeto schema -> https://mongoosejs.com/docs/guide.html#methods
+// Para comparar passwords
+
+veterinarioSchema.methods.comprobarPassword = async function (passordForm) {
+	return await bcrypt.compare(passordForm, this.password) // <- de nuevo apuntamos al this del objeto
+}
+
 
 // Mongoose tiene que compilar el esquema en un modelo (MVC). Para ello utiliza .model, toma un nombre y un esquema.
 export const Veterniario = mongoose.model("Veterinario", veterinarioSchema);
