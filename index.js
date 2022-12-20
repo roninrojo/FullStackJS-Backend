@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from './config/db.js';
 import veterinarioRoutes from "./routes/veterinarioRoutes.js";  // <- archivos creados llevan extensión
+import pacienteRoutes from "./routes/pacienteRoutes.js";  // <- archivos creados llevan extensión
 
 // Cuando es import default podemos poner un alias directamente
 const app = express();
@@ -18,6 +19,7 @@ connectDB();
 
 // Routing Express
 app.use("/api/veterinarios", veterinarioRoutes);
+app.use("/api/pacientes", pacienteRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running in ${PORT} 🚀`);
