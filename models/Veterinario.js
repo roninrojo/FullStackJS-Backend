@@ -40,7 +40,7 @@ const veterinarioSchema = mongoose.Schema({
 	}
 });
 
-// .pre() es un middleware de mongoose. 
+// .pre() es un middleware de mongoose. En este caso hacemos que salte antes del .save
 // Modificamos el passord antes de almacenarlo
 veterinarioSchema.pre("save", async function (next) {
    	// Usamos function() para utilizar el this que apunta al scope del objeto  que llama la función
@@ -49,7 +49,7 @@ veterinarioSchema.pre("save", async function (next) {
 	// Si el ususario modifica otros datos y ya esta confirmado no queremos que se encripte de nuevo su password.
 	// next() pasa al siguiente middleware
 	if (!this.isModified('password')) {
-		next()
+		next() // -> save() 
 	}
 	const salt = await bcrypt.genSalt(10);
 	this.password = await bcrypt.hash(this.password, salt)
