@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from './config/db.js';
-import veterinarioRoutes from "./routes/veterinarioRoutes.js";  // <- archivos creados llevan extensión
-import pacienteRoutes from "./routes/pacienteRoutes.js";  // <- archivos creados llevan extensión
+import veterinarioRoutes from "./routes/veterinarioRoutes.js";
+import pacienteRoutes from "./routes/pacienteRoutes.js"; 
 
 // Cuando es import default podemos poner un alias directamente
 const app = express();

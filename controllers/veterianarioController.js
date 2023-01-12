@@ -1,4 +1,4 @@
-import res from "express/lib/response.js";
+// import res from "express/lib/response.js";
 import { Veterniario } from "../models/Veterinario.js"
 import generarJWT from "../helpers/jsonWebToken.js";
 import tokenGenerator from "../helpers/tokenGenerator.js";
@@ -51,7 +51,7 @@ const autenticar = async (req, res) => {
     
     const usuario = await Veterniario.findOne({ email });
     // Crea una instancia del modelo cuando encuentra un registro que coincide con email. Podemos usar .select para traernos solo lo que nos interese
-    console.log(usuario.id); // { _id: new ObjectId...
+    console.log(usuario._id); // { _id: new ObjectId...
 
     // email no existe
     if (!usuario) { // null
@@ -102,7 +102,7 @@ const passwordResetStart = async (req, res) => {
 const passwordToken = async (req, res) => {
     const { token } = req.params;
     const usuario = await Veterniario.findOne({ token });
-
+    
     if (usuario) {
         res.json({msg:"Token correcto"})
     } else {
@@ -114,8 +114,10 @@ const passwordToken = async (req, res) => {
 const passwordResetEnd = async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
-
+    
+    
     const usuario = await Veterniario.findOne({ token });
+    console.log(usuario);
 
     if (!usuario) {
         const error = new Error("Error inesperado");

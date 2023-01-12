@@ -12,6 +12,8 @@ import checkAuth from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
+
+
 // Public
 router.post('/', registrar);
 router.get('/confirmar/:token', confirmar); // :param -> routing dinámico, parametros por url
