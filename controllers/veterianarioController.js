@@ -5,7 +5,12 @@ import tokenGenerator from "../helpers/tokenGenerator.js";
 
 // El usuario envia sus datos rellenando un formulario de registro
 const registrar = async (req, res) => {
-    
+    // Prevenir duplicados
+    const userExist = await Veterinario.findOne({ email });
+    if (userExist) {
+        const error = new Error("Ese email ya está registrado");
+        return res.status(400).json({ msg: error.message });
+    }
     try {
         // Recibimos datos
         const veterinario = new Veterniario(req.body);
