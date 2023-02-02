@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Veterniario } from "../models/Veterinario.js";
+import { Veterinario } from "../models/Veterinario.js";
 
 const checkAuth = async (req, res, next) => {
     let token;
@@ -12,7 +12,7 @@ const checkAuth = async (req, res, next) => {
             // console.log(decoded); // -> Obj
             
             // Instanciamos veterinario en el request. Ahora esta disponible para express. -> Custom request
-            req.veterinario = await Veterniario.findById(decoded.id).select("-password -token -confirmado");
+            req.veterinario = await Veterinario.findById(decoded.id).select("-password -token -confirmado");
             
             // controller -> siguiente
             next();

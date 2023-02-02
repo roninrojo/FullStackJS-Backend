@@ -1,10 +1,14 @@
 // import res from "express/lib/response.js";
-import { Veterniario } from "../models/Veterinario.js"
+import { Veterinario } from "../models/Veterinario.js"
 import generarJWT from "../helpers/jsonWebToken.js";
 import tokenGenerator from "../helpers/tokenGenerator.js";
+import emailRegistro from "../helpers/emialRegistro.js";
+import emailPassword from "../helpers/emailOlvidado.js";
 
 // El usuario envia sus datos rellenando un formulario de registro
 const registrar = async (req, res) => {
+    const { email, nombre } = req.body;
+
     // Prevenir duplicados
     const userExist = await Veterinario.findOne({ email });
     if (userExist) {
@@ -13,14 +17,22 @@ const registrar = async (req, res) => {
     }
     try {
         // Recibimos datos
-        const veterinario = new Veterniario(req.body);
+        const veterinario = new Veterinario(req.body);
         // Guardamos un registro en MongoDB
         const veterinarioRegistro = await veterinario.save();
+
+        // Enviar email
+        emailRegistro({
+            email,
+            nombre,
+            token: veterinarioRegistro.token
+        })    
         
         res.json({ veterinarioRegistro })
     } catch (error) {
         console.log(error);
     }
+    
 }
 
 const perfil = (req, res) => {
@@ -36,7 +48,7 @@ const perfil = (req, res) => {
 const confirmar = async (req, res) => {
     const { token } = req.params;
     try {
-        const usuarioConfirmar = await Veterniario.findOne({token}) // {token : token}
+        const usuarioConfirmar = await Veterinario.findOne({token}) // {token : token}
         if (!usuarioConfirmar) {
             const error = new Error("Token no valido");
             return res.status(404).json({ msg: error.message });
@@ -54,7 +66,7 @@ const confirmar = async (req, res) => {
 const autenticar = async (req, res) => {
     const { email, password } = req.body;
     
-    const usuario = await Veterniario.findOne({ email });
+    const usuario = await Veterinario.findOne({ email });
     // Crea una instancia del modelo cuando encuentra un registro que coincide con email. Podemos usar .select para traernos solo lo que nos interese
     console.log(usuario._id); // { _id: new ObjectId...
 
@@ -86,7 +98,7 @@ const passwordResetStart = async (req, res) => {
     // Nos llega una email (post req) y debemos buscarlo en la BD
     const { email } = req.body;
     
-    const usuario = await Veterniario.findOne({ email });
+    const usuario = await Veterinario.findOne({ email });
     
     if (!usuario) {
         const error = new Error("El usuario no existe");
@@ -97,6 +109,14 @@ const passwordResetStart = async (req, res) => {
     try {
         usuario.token = tokenGenerator();
         await usuario.save();
+
+        // Enviar email
+        emailPassword({
+            email,
+            nombre: usuario.nombre,
+            token: usuario.token
+        })    
+
         res.json({ msg: "Email enviado" });
     } catch (error) {
         const e = new Error("Error inesperado");
@@ -106,7 +126,7 @@ const passwordResetStart = async (req, res) => {
 
 const passwordToken = async (req, res) => {
     const { token } = req.params;
-    const usuario = await Veterniario.findOne({ token });
+    const usuario = await Veterinario.findOne({ token });
     
     if (usuario) {
         res.json({msg:"Token correcto"})
@@ -121,7 +141,7 @@ const passwordResetEnd = async (req, res) => {
     const { password } = req.body;
     
     
-    const usuario = await Veterniario.findOne({ token });
+    const usuario = await Veterinario.findOne({ token });
     console.log(usuario);
 
     if (!usuario) {

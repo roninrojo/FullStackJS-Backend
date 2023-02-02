@@ -11,24 +11,26 @@ const app = express();
 // ¿Qué es un middleware? -> https://medium.com/@aarnlpezsosa/middleware-en-express-js-5ef947d668b
 app.use(express.json());
 
+// Variables de entorno. Error -> declararlo despues de usar variables de entorno... 🤦‍♂️  
+dotenv.config();
+
 // Cors config
-const allowList = ['http://localhost:5173'];
-// const allowList = [process.env.FRONTEND_URL];
+const allowList = [process.env.LOCALHOST_URL];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (allowList.indexOf(origin) !== -1) {
+    if (allowList.includes(origin)) {
       // El Origen del Request esta permitido
       callback(null, true);
     } else {
+      console.log(origin);
       callback(new Error("No permitido por CORS"));
     }
   },
 };
 app.use(cors(corsOptions));
 
-// Variables de entorno
-dotenv.config();
+// PORT
 const PORT = process.env.PORT || 4000;
 
 // MongoDB
@@ -39,5 +41,5 @@ app.use("/api/veterinarios", veterinarioRoutes);
 app.use("/api/pacientes", pacienteRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Server running in ${PORT} 🚀`);
+  console.log(`Server running in ${PORT} 🚀`);
 })

@@ -64,4 +64,4 @@ veterinarioSchema.methods.comprobarPassword = async function (passordForm) {
 
 
 // Mongoose tiene que compilar el esquema en un modelo (MVC). Para ello utiliza .model, toma un nombre y un esquema.
-export const Veterniario = mongoose.model("Veterinario", veterinarioSchema);
+export const Veterinario = mongoose.model("Veterinario", veterinarioSchema);
