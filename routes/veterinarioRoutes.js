@@ -3,7 +3,7 @@ import {
     registrar,
     perfil,
     confirmar,
-    autenticar,
+    login,
     passwordResetStart,
     passwordToken,
     passwordResetEnd
@@ -17,7 +17,7 @@ const router = express.Router();
 // Public
 router.post('/', registrar);
 router.get('/confirmar/:token', confirmar); // :param -> routing dinámico, parametros por url
-router.post('/autenticar', autenticar);
+router.post('/login', login);
 router.post('/password-reset', passwordResetStart);
 // router.get('/password-reset/:token', passwordToken);
 // router.post('/password-reset/:token', passwordResetEnd);
@@ -26,6 +26,6 @@ router.route('/password-reset/:token').get(passwordToken).post(passwordResetEnd)
 
 // Private
 // el 'next' hace que salte al siguiente middleware (perfil), una vez pasado por checkAuth
-router.post('/perfil', checkAuth, perfil);
+router.get('/perfil', checkAuth, perfil);
 
 export default router;

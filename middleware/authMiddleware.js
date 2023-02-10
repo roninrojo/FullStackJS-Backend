@@ -3,6 +3,8 @@ import { Veterinario } from "../models/Veterinario.js";
 
 const checkAuth = async (req, res, next) => {
     let token;
+    console.log('entra al chakAuth');
+    
     if (req.headers.authorization) {
         try {
             // Quitamos el "Bearer "

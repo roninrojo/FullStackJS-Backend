@@ -36,9 +36,11 @@ const registrar = async (req, res) => {
 }
 
 const perfil = (req, res) => {
+    console.log('entra a perfil');
+    
     const { veterinario } = req;
 
-    res.json({perfil: veterinario})
+    res.json({veterinario})
 
     console.log(req.veterinario);
     
@@ -63,12 +65,12 @@ const confirmar = async (req, res) => {
     }    
 }
 
-const autenticar = async (req, res) => {
+const login = async (req, res) => {
     const { email, password } = req.body;
     
     const usuario = await Veterinario.findOne({ email });
     // Crea una instancia del modelo cuando encuentra un registro que coincide con email. Podemos usar .select para traernos solo lo que nos interese
-    console.log(usuario._id); // { _id: new ObjectId...
+    
 
     // email no existe
     if (!usuario) { // null
@@ -82,10 +84,18 @@ const autenticar = async (req, res) => {
         return res.status(403).json({msg: error.message})
     }
 
+    // Sí existe...
+    // console.log(usuario._id); // { _id: new ObjectId...
+    
     // Atenticar usuario
     if (await usuario.comprobarPassword(password)) {
         // Autenticar con Json Web Token
-        res.json({token: generarJWT(usuario.id)})
+        res.json({
+            _id: usuario._id,
+            nombre: usuario.nombre,
+            email: usuario.email,
+            token: generarJWT(usuario.id)
+        })
 
     } else {
         const error = new Error("Password incorrecto ");
@@ -140,9 +150,7 @@ const passwordResetEnd = async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
     
-    
     const usuario = await Veterinario.findOne({ token });
-    console.log(usuario);
 
     if (!usuario) {
         const error = new Error("Error inesperado");
@@ -164,7 +172,7 @@ export {
     registrar,
     perfil,
     confirmar,
-    autenticar,
+    login,
     passwordResetStart,
     passwordToken,
     passwordResetEnd
