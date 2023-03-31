@@ -49,6 +49,8 @@ const perfil = (req, res) => {
 // El usuario confirma el registro mediante un token enviado por url /:token
 const confirmar = async (req, res) => {
     const { token } = req.params;
+    console.log('entra en confirmar');
+    
     try {
         const usuarioConfirmar = await Veterinario.findOne({token}) // {token : token}
         if (!usuarioConfirmar) {
