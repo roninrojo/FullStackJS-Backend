@@ -1,7 +1,7 @@
 // Por convención los modelos se nombran con la 1a letra en mayúscula
 
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import tokenGenerator from "../helpers/tokenGenerator.js";
 
 // https://mongoosejs.com/docs/schematypes.html
@@ -49,10 +49,12 @@ veterinarioSchema.pre("save", async function (next) {
 	// Si el ususario modifica otros datos y ya esta confirmado no queremos que se encripte de nuevo su password.
 	// next() pasa al siguiente middleware
 	if (!this.isModified('password')) {
-		next() // -> save() 
+		return next() // -> save() 
 	}
 	const salt = await bcrypt.genSalt(10);
-	this.password = await bcrypt.hash(this.password, salt)
+	this.password = await bcrypt.hash(this.password, salt);
+	console.log('password encriptado *️⃣*️⃣*️⃣');
+	
 })
 
 // Asignamos un metdodo al objeto schema -> https://mongoosejs.com/docs/guide.html#methods

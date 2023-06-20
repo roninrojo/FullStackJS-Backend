@@ -18,7 +18,7 @@ const emailPassword = async (datos) => {
         to: email, // list of receivers
         subject: `Hola ${nombre}, solicitaste restablecer tu password`, // Subject line
         text: "Hola ${nombre}, solicitaste restablecer tu password", // plain text body
-        html: `xº
+        html: `<p>👋</p>
                <p>Hola ${nombre}, para restablecer tu password, pulsa en el siguiente enlace:</p>
                <p><a href="${process.env.LOCALHOST_URL}/forgotten-password/${token}">Restablece tu password</a></p>
             `, // html body

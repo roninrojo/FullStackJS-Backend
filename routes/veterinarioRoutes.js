@@ -6,7 +6,9 @@ import {
     login,
     passwordResetStart,
     passwordToken,
-    passwordResetEnd
+    passwordResetEnd,
+    actualizarPerfil,
+    actualizarPassword
 } from "../controllers/veterianarioController.js";
 import checkAuth from "../middleware/authMiddleware.js";
 
@@ -27,5 +29,7 @@ router.route('/password-reset/:token').get(passwordToken).post(passwordResetEnd)
 // Private
 // el 'next' hace que salte al siguiente middleware (perfil), una vez pasado por checkAuth
 router.get('/perfil', checkAuth, perfil);
+router.put('/perfil/:id', checkAuth, actualizarPerfil);
+router.put('/password', checkAuth, actualizarPassword);
 
 export default router;

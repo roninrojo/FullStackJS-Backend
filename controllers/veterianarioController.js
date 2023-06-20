@@ -20,7 +20,7 @@ const registrar = async (req, res) => {
         const veterinario = new Veterinario(req.body);
         // Guardamos un registro en MongoDB
         const veterinarioRegistro = await veterinario.save();
-
+        
         // Enviar email
         emailRegistro({
             email,
@@ -42,7 +42,7 @@ const perfil = (req, res) => {
 
     res.json({veterinario})
 
-    console.log(req.veterinario);
+    // console.log(req.veterinario);
     
 }
 
@@ -162,12 +162,83 @@ const passwordResetEnd = async (req, res) => {
     try {
         usuario.token = null;
         usuario.password = password;
-        await usuario.save();
+        const passwordSaved = await usuario.save();
+        console.log(passwordSaved)
         res.json({msg:"Password modificado"})
     } catch (error) {
         const e = new Error("Token no valido");
         return res.status(403).json({msg: e.message})
     }
+}
+
+const actualizarPerfil = async (req, res) => {
+    // guardamos instancia del registro de la BBDD
+    // console.log(req.body);
+    console.log('➡️ Entra en Actualizar Perfil');
+    // console.log(req.veterinario);
+    // Podríamos usar el id de req.veterinario, porque ya está logado y ha pasado por authMiddleware.js
+    // que instancia veterinario en wl req, pero como le pasamos el perfil con el id, lo aprovechamos.
+    const { _id, nombre, email, telefono, web } = req.body;
+    const usuario = await Veterinario.findById(_id);
+    if (!usuario) {
+        const error = new Error("Error inesperado");
+        return res.status(400).json({msg: error.message})
+    }
+
+    // email definido como único en el modelo -> Veterinario.js
+    if (usuario.email !== email) {
+        const exist = await Veterinario.findOne({ email });
+        if (exist) {
+            const error = new Error("Ese email está siendo usado por otro usuario. Tus cambios no se guardaron.");
+            return res.status(400).json({msg: error.message})
+        }
+    }
+
+    try {
+        usuario.nombre = nombre;
+        usuario.email = email;
+        usuario.telefono = telefono;
+        usuario.web = web;
+        
+        const usuarioUpdated = await usuario.save();
+        res.json(usuarioUpdated);
+
+    } catch (error) {
+        console.log(error);
+        const e = new Error("Error inesperado");
+        return res.status(400).json({msg: e.message})
+        
+    }
+}
+
+const actualizarPassword = async (req, res) => {
+    console.log('entra en actualizar password');
+    // console.log(req.body);
+    // console.log(req);
+
+    const { id } = req.veterinario; // <- authMiddleware.js No hace falta que le pasemos id
+    const [ password, newPassword ] = req.body;
+    const usuario = await Veterinario.findById(id);
+    
+    if (!usuario) {
+        const error = new Error("No existe el usuario");
+        return res.status(400).json({msg: error.message})
+    }
+
+    if (await usuario.comprobarPassword(password)) {
+        try {
+            usuario.password = newPassword;
+            await usuario.save();
+            res.json({msg:"Password modificado ✅"})
+        } catch (error) {
+            console.log(error);
+            const e = new Error("Error inesperado. No se puedo actualizar el password.");
+            return res.status(400).json({msg: e.message})
+        }
+    } else {
+        const error = new Error("Password incorrecto");
+        return res.status(403).json({msg: error.message})
+    } 
 }
 
 export {
@@ -177,5 +248,7 @@ export {
     login,
     passwordResetStart,
     passwordToken,
-    passwordResetEnd
+    passwordResetEnd,
+    actualizarPerfil,
+    actualizarPassword
 }  
