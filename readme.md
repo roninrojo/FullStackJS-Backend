@@ -13,6 +13,6 @@ Veterinary App 🐱🐶
 - bcrypt (Hash our password) node.bcrypt.js
 - JWT (Jason Web Tokens)
 
-🚅 Backend deployed at [Railway](https://railway.app/)
+🚅 Backend deployed at [Railway](https://railway.app/) \
 🖥️ Frontend ➡️ [https://github.com/roninrojo/FullStackJS-Frontend](https://github.com/roninrojo/FullStackJS-Frontend) 
-[comment]🚀 Frontend Project deplyed at Netlify ➡️ [https://cerulean-parfait-509094.netlify.app/](https://cerulean-parfait-509094.netlify.app/)
+<!-- 🚀 Frontend Project deplyed at Netlify ➡️ [https://cerulean-parfait-509094.netlify.app/](https://cerulean-parfait-509094.netlify.app/) -->
