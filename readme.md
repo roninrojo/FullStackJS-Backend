@@ -15,4 +15,4 @@ Veterinary App 🐱🐶
 
 🚅 Backend deployed at [Railway](https://railway.app/)
 🖥️ Frontend ➡️ [https://github.com/roninrojo/FullStackJS-Frontend](https://github.com/roninrojo/FullStackJS-Frontend) 
-🚀 Frontend Project deplyed at Netlify ➡️ [https://cerulean-parfait-509094.netlify.app/](https://cerulean-parfait-509094.netlify.app/)
+[comment]🚀 Frontend Project deplyed at Netlify ➡️ [https://cerulean-parfait-509094.netlify.app/](https://cerulean-parfait-509094.netlify.app/)
